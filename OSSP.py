@@ -35,7 +35,15 @@ def update_position(particle):
 
 def pso(processing_times, machines, num_jobs, num_machines, num_particles=2000, max_iter=150, inertia_weight=0.9,
         cognitive=2, social=2):
-    
+    swarm = [Particle(num_jobs, num_machines) for _ in range(num_particles)]
+    global_best_position = None
+    global_best_makespan = float('inf')
+    loss_history = []
+            
+    for iteration in range(max_iter):
+        for particle in swarm:
+            # uiashduiashdniasu
+            
     #adhfbasdiyhufdbawsifbwdse
     return global_best_makespan, global_best_position, loss_history
 
