@@ -31,20 +31,42 @@ def update_velocity(particle, global_best_position, inertia_weight, cognitive, s
 
 
 def update_position(particle):
-    particle.position = #dhfguiwehuirfw
+    num_elements = len(particle.position)
 
-def pso(processing_times, machines, num_jobs, num_machines, num_particles=2000, max_iter=150, inertia_weight=0.9,
+    for i in range(num_elements):
+        if abs(particle.velocity[i]) > np.random.rand():
+            swap_index = np.random.randint(0, num_elements)
+            particle.position[i], particle.position[swap_index] = particle.position[swap_index], particle.position[i]
+
+    particle.position = np.clip(particle.position, 0, num_elements - 1).astype(int)
+
+
+def pso(processing_times, machines, num_jobs, num_machines, num_particles=150, max_iter=200, inertia_weight=0.9,
         cognitive=2, social=2):
     swarm = [Particle(num_jobs, num_machines) for _ in range(num_particles)]
     global_best_position = None
     global_best_makespan = float('inf')
     loss_history = []
-            
+
     for iteration in range(max_iter):
         for particle in swarm:
-            # uiashduiashdniasu
-            
-    #adhfbasdiyhufdbawsifbwdse
+            print(particle.position)
+            current_makespan = makespan(particle.position, processing_times, machines, num_jobs, num_machines)
+
+            if current_makespan < particle.best_makespan:
+                particle.best_makespan = current_makespan
+                particle.best_position = particle.position.copy()
+
+            if current_makespan < global_best_makespan:
+                global_best_makespan = current_makespan
+                global_best_position = particle.position.copy()
+
+        loss_history.append(global_best_makespan)
+
+        for particle in swarm:
+            update_velocity(particle, global_best_position, inertia_weight, cognitive, social)
+            update_position(particle)
+
     return global_best_makespan, global_best_position, loss_history
 
 num_jobs = 4
